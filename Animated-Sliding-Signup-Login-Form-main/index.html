@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp & Login Form</title>
+    <link rel="stylesheet" href="form.css">
+    <script src="https://kit.fontawesome.com/9d2026a172.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container" id="main">
+        <!-- Sign up form -->
+        <div class="form-container sign-up-container">
+            <form action="#">
+                <h1>Create Account</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>OR Use Your Email Address For Registration</span>
+                <input type="text" placeholder="Name" />
+                <input type="email" placeholder="Email" />
+                <input type="password" placeholder="Password" />
+                <button>SIGN UP</button>
+            </form>
+        </div>
+        
+        <!-- Login form -->
+        <div class="form-container login-container">
+            <form action="#">
+                <h1>Login</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google"></i></a>
+                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>OR Use Your Account</span>
+                <input type="email" placeholder="Email" />
+                <input type="password" placeholder="Password" />
+                <a href="#">Forgot your password?</a>
+                <button>LOGIN</button>
+            </form>
+        </div>
+        
+        <!-- Overlay container -->
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Hello Again!</h1>
+                    <p>To stay connected, please log in with your personal information.</p>
+                    <button class="ghost" id="login">LOGIN</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hey There!</h1>
+                    <p>Provide your personal information and embark on a journey with us.</p>
+                    <button class="ghost" id="signUp">SIGN UP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	<script src="form.js"></script>
+</body>
+</html>

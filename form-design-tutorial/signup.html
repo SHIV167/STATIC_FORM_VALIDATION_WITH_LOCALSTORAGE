@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="localstorage.js" defer></script>
+  <style>
+    /* Basic styling for password toggle eye icon */
+    .password-toggle {
+      cursor: pointer;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .password-container {
+      position: relative;
+    }
+
+    /* Hide the default eye when showing password */
+    .password-toggle.hide .eye-open {
+      display: none;
+    }
+
+    /* Hide the slash-eye when password is hidden */
+    .password-toggle:not(.hide) .eye-closed {
+      display: none;
+    }
+
+    /* Validation styling */
+    .input-container {
+      position: relative;
+    }
+
+    .validation-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: none;
+      /* Hidden by default */
+    }
+
+    .password-container .validation-icon {
+      right: 40px;
+      /* Make room for the eye icon */
+    }
+
+    input.valid+.validation-icon {
+      display: block;
+      /* Show when input has valid class */
+    }
+
+    /* Spinner styling */
+    .spinner-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .spinner-active {
+      display: flex;
+    }
+
+    /* Button with spinner */
+    .submit-button {
+      position: relative;
+    }
+
+    .button-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 3px solid #ffffff;
+      border-top: 3px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .button-spinner.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <h1>Signup</h1>
+    <p id="error-message"></p>
+    <form id="form" method="post">
+      <div class="input-container">
+        <label for="firstname-input">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+            <path
+              d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z" />
+          </svg>
+        </label>
+        <input type="text" name="firstname" id="firstname-input" placeholder="Firstname">
+        <!-- Green Tick Validation Icon -->
+        <svg class="validation-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="#4CAF50" />
+        </svg>
+      </div>
+      <div class="input-container">
+        <label for="email-input">
+          <span>@</span>
+        </label>
+        <input type="email" name="email" id="email-input" placeholder="Email">
+        <!-- Green Tick Validation Icon -->
+        <svg class="validation-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="#4CAF50" />
+        </svg>
+      </div>
+      <div class="password-container input-container">
+        <label for="password-input">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+            <path
+              d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm240-200q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80Z" />
+          </svg>
+        </label>
+        <input type="password" name="password" id="password-input" placeholder="Password">
+        <!-- Green Tick Validation Icon -->
+        <svg class="validation-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="#4CAF50" />
+        </svg>
+        <div class="password-toggle" onclick="togglePasswordVisibility('password-input', this)">
+          <!-- Eye icon for show password -->
+          <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+            <path
+              d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z" />
+          </svg>
+          <!-- Slashed eye icon for hide password -->
+          <svg class="eye-closed" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+            <path
+              d="m644-428-58-58q9-47-27-83t-83-27l-58-58q17-8 36-12t38-4q75 0 127.5 52.5T672-490q0 19-4 38t-12 36l-12-12Zm128 126-58-56q38-29 67.5-63.5T832-490q-50-101-143.5-160.5T480-710q-29 0-57 4t-55 12l-62-62q41-17 84.5-25.5T480-790q151 0 269 83.5T920-490q-22 57-58.5 107T772-302Zm20 246L624-222q-35 11-71.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53.5-98.5T182-686L56-810l56-56 736 736-56 56ZM222-648q-29 26-53 57t-41 71q50 101 143.5 160.5T480-300q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-520q0-11 1.5-21t4.5-21l-84-86Zm319 93Zm-151 75Z" />
+          </svg>
+        </div>
+      </div>
+      <div class="password-container input-container">
+        <label for="repeat-password-input">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+            <path
+              d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm240-200q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80Z" />
+          </svg>
+        </label>
+        <input type="password" name="repeat-password" id="repeat-password-input" placeholder="Repeat Password">
+        <!-- Green Tick Validation Icon -->
+        <svg class="validation-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="#4CAF50" />
+        </svg>
+        <div class="password-toggle" onclick="togglePasswordVisibility('repeat-password-input', this)">
+          <!-- Eye icon for show password -->
+          <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+            <path
+              d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-146 0-266-81.5T40-500q54-137 174-218.5T480-800q146 0 266 81.5T920-500q-54 137-174 218.5T480-200Zm0-300Zm0 220q113 0 207.5-59.5T832-500q-50-101-144.5-160.5T480-720q-113 0-207.5 59.5T128-500q50 101 144.5 160.5T480-280Z" />
+          </svg>
+          <!-- Slashed eye icon for hide password -->
+          <svg class="eye-closed" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+            <path
+              d="m644-428-58-58q9-47-27-83t-83-27l-58-58q17-8 36-12t38-4q75 0 127.5 52.5T672-490q0 19-4 38t-12 36l-12-12Zm128 126-58-56q38-29 67.5-63.5T832-490q-50-101-143.5-160.5T480-710q-29 0-57 4t-55 12l-62-62q41-17 84.5-25.5T480-790q151 0 269 83.5T920-490q-22 57-58.5 107T772-302Zm20 246L624-222q-35 11-71.5 16.5T480-200q-151 0-269-83.5T40-500q21-53 53.5-98.5T182-686L56-810l56-56 736 736-56 56ZM222-648q-29 26-53 57t-41 71q50 101 143.5 160.5T480-300q20 0 39-2.5t39-5.5l-36-38q-11 3-21 4.5t-21 1.5q-75 0-127.5-52.5T300-520q0-11 1.5-21t4.5-21l-84-86Zm319 93Zm-151 75Z" />
+          </svg>
+        </div>
+      </div>
+      <div class="submit-button">
+        <button type="submit" id="submit-button">Signup</button>
+        <div class="button-spinner" id="button-spinner"></div>
+      </div>
+    </form>
+    <p>Already have an Account? <a href="login.html">login</a></p>
+  </div>
+
+  <!-- Full screen spinner overlay -->
+  <div class="spinner-container" id="spinner-container">
+    <div class="spinner"></div>
+  </div>
+
+  <script>
+    function togglePasswordVisibility(inputId, toggleElement) {
+      const passwordInput = document.getElementById(inputId);
+
+      // Toggle between password visibility
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleElement.classList.add("hide");
+      } else {
+        passwordInput.type = "password";
+        toggleElement.classList.remove("hide");
+      }
+    }
+
+    // Validation logic
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('form');
+      const firstnameInput = document.getElementById('firstname-input');
+      const emailInput = document.getElementById('email-input');
+      const passwordInput = document.getElementById('password-input');
+      const repeatPasswordInput = document.getElementById('repeat-password-input');
+      const errorMessage = document.getElementById('error-message');
+      const spinnerContainer = document.getElementById('spinner-container');
+      const buttonSpinner = document.getElementById('button-spinner');
+      const submitButton = document.getElementById('submit-button');
+
+      // Simple validation functions
+      function validateFirstname() {
+        if (firstnameInput.value.trim().length >= 2) {
+          firstnameInput.classList.add('valid');
+          return true;
+        } else {
+          firstnameInput.classList.remove('valid');
+          return false;
+        }
+      }
+
+      function validateEmail() {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailRegex.test(emailInput.value.trim())) {
+          emailInput.classList.add('valid');
+          return true;
+        } else {
+          emailInput.classList.remove('valid');
+          return false;
+        }
+      }
+
+      function validatePassword() {
+        // Minimum 8 characters, at least one letter and one number
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        if (passwordRegex.test(passwordInput.value)) {
+          passwordInput.classList.add('valid');
+          return true;
+        } else {
+          passwordInput.classList.remove('valid');
+          return false;
+        }
+      }
+
+      function validateRepeatPassword() {
+        if (repeatPasswordInput.value === passwordInput.value && repeatPasswordInput.value !== '') {
+          repeatPasswordInput.classList.add('valid');
+          return true;
+        } else {
+          repeatPasswordInput.classList.remove('valid');
+          return false;
+        }
+      }
+
+      // Show loading spinner
+      function showSpinner() {
+        buttonSpinner.classList.add('active');
+        submitButton.innerText = 'Processing...';
+        // For a full screen overlay, uncomment the line below
+        // spinnerContainer.classList.add('spinner-active');
+      }
+
+      // Hide loading spinner
+      function hideSpinner() {
+        buttonSpinner.classList.remove('active');
+        submitButton.innerText = 'Signup';
+        // For a full screen overlay, uncomment the line below
+        // spinnerContainer.classList.remove('spinner-active');
+      }
+
+      // Add input event listeners for real-time validation
+      firstnameInput.addEventListener('input', validateFirstname);
+      emailInput.addEventListener('input', validateEmail);
+      passwordInput.addEventListener('input', function () {
+        validatePassword();
+        // Check repeat password too in case it was already filled
+        if (repeatPasswordInput.value) {
+          validateRepeatPassword();
+        }
+      });
+      repeatPasswordInput.addEventListener('input', validateRepeatPassword);
+
+      // Form submission validation
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Show loading spinner
+        showSpinner();
+
+        const isFirstnameValid = validateFirstname();
+        const isEmailValid = validateEmail();
+        const isPasswordValid = validatePassword();
+        const isRepeatPasswordValid = validateRepeatPassword();
+
+        // Simulate a network delay
+        setTimeout(function () {
+          if (isFirstnameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid) {
+            // All validations passed, proceed with form submission
+            errorMessage.textContent = '';
+
+            // Create user object for localStorage (assuming that's what your localstorage.js handles)
+            const user = {
+              firstname: firstnameInput.value,
+              email: emailInput.value,
+              password: passwordInput.value
+            };
+
+            // You might want to save this to localStorage or send it to a server
+            console.log('Form submitted successfully:', user);
+
+            // Show success message
+            errorMessage.textContent = 'Signup successful!';
+            errorMessage.style.color = 'green';
+
+            // Hide spinner after a short delay
+            setTimeout(function () {
+              hideSpinner();
+
+              // Uncomment if you want to actually submit the form
+              // form.submit();
+
+              // Or redirect to another page
+              // window.location.href = 'login.html';
+            }, 500);
+
+          } else {
+            // Show appropriate error message
+            errorMessage.textContent = 'Please fill out all fields correctly.';
+            errorMessage.style.color = 'red';
+            hideSpinner();
+          }
+        }, 1500); // Simulate 1.5 second processing time
+      });
+    });
+  </script>
+</body>
+
+</html>
